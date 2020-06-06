@@ -1,5 +1,5 @@
 {
-  "name": "puffer",
+  "name": "@utkarsh3jan/puffer",
   "version": "1.0.0",
   "description": "Puffer is a reactive JS library.",
   "author": "Utkarsh Dubey",
@@ -7,14 +7,11 @@
   "main": "dist/index.js",
   "source": "src/index.ts",
   "scripts": {
-    "build": "microbundle src/index.ts -o ./dist -f modern,umd --target web  --tsconfig tsconfig.json", 
+    "build": "microbundle src/index.js -o ./dist -f modern,umd --target web",
     "dev": "microbundle watch"
   },
   "dependencies": {
-    "@babel/cli": "^7.10.1",
-    "@babel/core": "^7.10.1",
-    "@babel/plugin-proposal-class-properties": "^7.10.1",
-    "@babel/preset-env": "^7.10.1",
+    "@babel/core": "^7.10.2",
     "microbundle": "^0.12.0"
   }
 }
