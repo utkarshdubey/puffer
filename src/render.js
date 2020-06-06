@@ -1,8 +1,8 @@
 export function render(element, container) {
     if (typeof element.type === "function"){
-      if(element.prototype && element.prototype.render){
+      if(element.type.prototype && element.type.prototype.render){
         const c = new element.type(element.props);
-        const vn = c.render;
+        const vn = c.render();
         return render(vn, container);
       } else{
         return render(element.type(element.props), container);
