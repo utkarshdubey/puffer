@@ -6,7 +6,6 @@
   "license": "MIT",
   "main": "dist/index.js",
   "source": "src/index.ts",
-  "esmodule": "dist/puffer.js",
   "scripts": {
     "build": "microbundle src/index.js -o ./dist -f modern,umd --target web",
     "dev": "microbundle watch"

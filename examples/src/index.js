@@ -1,4 +1,5 @@
-import { createElement, render, Component } from '../../dist/puffer';
+import { createElement, render, Component } from '../../dist/puffer.modern';
+
 
 /** @jsx createElement */
 
@@ -6,7 +7,7 @@ class Home extends Component{
     render(){
         return(
             <div>
-                <p style={{paddingTop: "5px"}}>ok</p>
+                <p style={{color: "blue"}}>Hello World</p>
             </div>
         )
     }
