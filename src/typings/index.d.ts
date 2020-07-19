@@ -4,14 +4,13 @@ import type Component from "../component";
 export type RenderedDom = UIElement;
 export type EventListenerDict = JSXInternal.DOMEvents<EventTarget>;
 
-export interface PufferNode<R = any> {
-  type?: string;
+export interface PufferNode {
+  type: ClassComponent | FunctionComponent | string;
   props: Props;
-  ref: ((val: R) => void) | { current: R };
-  dom: RenderedDom;
+  dom?: RenderedDom;
   children?: PufferNode[];
   sibling?: PufferNode;
-  parent: HTMLElement;
+  parent?: HTMLElement;
 }
 
 export type Props = Readonly<
@@ -21,7 +20,7 @@ export type Props = Readonly<
 >;
 
 export type ComponentChild =
-  | PufferNode<any>
+  | PufferNode
   | object
   | string
   | number
@@ -29,14 +28,11 @@ export type ComponentChild =
   | null
   | undefined;
 
-//#region deprecated/unused
-/**
- * @deprecated
- * Update the types before you use this interface
- */
-export interface ComponentConstructor {
-  new (props: Props): Component;
+export interface ClassComponent<P = {}> {
+  new (props: P): Component;
   prototype: Component;
+
+  render(): PufferNode;
 
   getDerivedStateFromProps?(
     props: Readonly<object>,
@@ -44,14 +40,11 @@ export interface ComponentConstructor {
   ): object | null;
 }
 
-/**
- * @deprecated
- * Upate the types before you use this inteface
- */
 export interface FunctionComponent {
-  (props: Props): PufferNode<any> | null;
+  (props: Props): PufferNode;
 }
 
+//#region deprecated/unused
 /**
  * @deprecated
  * Upate the types before you use this inteface
