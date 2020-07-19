@@ -1,8 +1,8 @@
-import { ComponentChild } from "./typings/index";
+import { ComponentChild as Child, Props } from "./typings/index";
 
-export function createElement(type, props, ...children: ComponentChild[]) {
+function createElement(tag: string, props?: Props, ...children: Child[]) {
   return {
-    type,
+    tag,
     props: {
       ...props,
       children: children.map((child) =>
@@ -21,3 +21,5 @@ function createTextElement(text: string | number | boolean) {
     },
   };
 }
+
+export { createElement };
