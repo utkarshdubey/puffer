@@ -1,59 +1,18 @@
-import { JSXInternal } from "./jsx";
-import { Component } from "../component";
+import type { JSXInternal } from "./jsx";
+import type Component from "../component";
 
 export type RenderedDom = UIElement;
 export type EventListenerDict = JSXInternal.DOMEvents<EventTarget>;
 
 export interface PufferNode<R = any> {
   type?: string;
-  // json injection prevention
-  constructor: undefined;
   props: Props;
-  key: any;
-  // ref
   ref: ((val: R) => void) | { current: R };
-  // dom rendered can be `Element` or `Text`
-  _dom: RenderedDom;
-  // normalized props.children
-  _children: (PufferNode | null)[];
-  // instance of the component that rendered this vnode
-  _component: Component;
-  // if our class/function/fragment returns multiple dom, collect them here
-  // _domChildren:
-  // // document fragment for when our component returns an array of children
-  // _docFrag: DocumentFragment;
-  // these are returned by function/class components
-  _renders: PufferNode<any>;
-  // which class component return this vnode
-  _renderedBy: PufferNode<any>;
-
-  // passes the depth arg to the component
-  _depth: number;
-  // parentDom node -> to call append child on if we can not reorder
-  _parentDom: HTMLElement;
+  dom: RenderedDom;
+  children?: PufferNode[];
+  sibling?: PufferNode;
+  parent: HTMLElement;
 }
-
-export type TagName = string; // ComponentConstructor | FunctionComponent;
-
-export interface ComponentConstructor {
-  new (props: Props): Component;
-  prototype: Component;
-
-  getDerivedStateFromProps?(
-    props: Readonly<object>,
-    state: Readonly<object>
-  ): object | null;
-}
-export interface FunctionComponent {
-  (props: Props): PufferNode<any> | null;
-}
-
-export type setStateArgType<P, S, K extends keyof S> =
-  | ((
-      prevState: Readonly<S>,
-      props: Readonly<P>
-    ) => Pick<S, K> | Partial<S> | null)
-  | (Pick<S, K> | Partial<S> | null);
 
 export type Props = Readonly<
   { children?: ComponentChild[] } & JSXInternal.DOMEvents<EventTarget> &
@@ -70,6 +29,41 @@ export type ComponentChild =
   | null
   | undefined;
 
+//#region deprecated/unused
+/**
+ * @deprecated
+ * Update the types before you use this interface
+ */
+export interface ComponentConstructor {
+  new (props: Props): Component;
+  prototype: Component;
+
+  getDerivedStateFromProps?(
+    props: Readonly<object>,
+    state: Readonly<object>
+  ): object | null;
+}
+
+/**
+ * @deprecated
+ * Upate the types before you use this inteface
+ */
+export interface FunctionComponent {
+  (props: Props): PufferNode<any> | null;
+}
+
+/**
+ * @deprecated
+ * Upate the types before you use this inteface
+ * This interface will be deleted if not used in near future
+ */
+export type setStateArgType<P, S, K extends keyof S> =
+  | ((
+      prevState: Readonly<S>,
+      props: Readonly<P>
+    ) => Pick<S, K> | Partial<S> | null)
+  | (Pick<S, K> | Partial<S> | null);
+
 export interface UIElement extends HTMLElement {
   _events?: Partial<
     Record<keyof JSXInternal.DOMEvents<any>, JSXInternal.EventHandler<any>>
@@ -82,6 +76,8 @@ export interface VNodeHost extends HTMLElement {
   _hosts?: PufferNode;
 }
 
+export type HookInternal = { currentComponent: Component };
+
 export type DiffMeta = {
   depth: number;
   batch: DOMOps[];
@@ -89,7 +85,14 @@ export type DiffMeta = {
   next?: UIElement;
 };
 
-export type HookInternal = { currentComponent: Component };
+type ReadonlyVNodeProps =
+  | "constructor"
+  | "type"
+  | "props"
+  | "key"
+  | "ref"
+  | "_children"
+  | "_depth";
 
 export interface DOMOps {
   node: UIElement;
@@ -107,13 +110,5 @@ export interface DOMOps {
   value?: any;
 }
 
-type ReadonlyVNodeProps =
-  | "constructor"
-  | "type"
-  | "props"
-  | "key"
-  | "ref"
-  | "_children"
-  | "_depth";
-
 export type WritableProps = Exclude<keyof PufferNode, ReadonlyVNodeProps>;
+//#endregion deprecated/unused
