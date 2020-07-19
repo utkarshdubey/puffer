@@ -1,4 +1,6 @@
-export function createElement(type, props, ...children) {
+import { ComponentChild } from "./typings/index";
+
+export function createElement(type, props, ...children: ComponentChild[]) {
   return {
     type,
     props: {
@@ -10,9 +12,7 @@ export function createElement(type, props, ...children) {
   };
 }
 
-
-
-function createTextElement(text) {
+function createTextElement(text: string | number | boolean) {
   return {
     type: "TEXT_ELEMENT",
     props: {
