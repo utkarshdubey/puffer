@@ -4,10 +4,16 @@ import { createElement, render, Component } from '../../dist/puffer.modern';
 /** @jsx createElement */
 
 class Home extends Component{
+    constructor(props){
+        super(props);
+        this.state = {hello: 0, world: 20}
+    }
     render(){
+        this.setState({hello: 1})
+        console.log(this.state);
         return(
             <div>
-                <p style={{color: "blue"}}>Hello World</p>
+                <p style={{color: "blue", fontWeight: 'bolder', textDecoration: 'underline'}}>Hello World</p>
             </div>
         )
     }
@@ -26,4 +32,6 @@ class Home extends Component{
 // const container = document.getElementById('app');
 // render(element, container);
 
+const o = <Home />
+// console.log(o)
 render(<Home />, document.getElementById('app'));
